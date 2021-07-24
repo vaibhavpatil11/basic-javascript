@@ -5,6 +5,23 @@ const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 
 
+document.addEventListener(`DOMContentLoaded`, (e) => {
+
+    let tasks;
+    if (localStorage.getItem(`tasks`) === null) {
+        tasks = [];
+    }
+    else {
+        tasks = JSON.parse(localStorage.getItem(`tasks`));
+    }
+
+    tasks.forEach(task => {
+
+        addTask(tasks);
+    });
+
+});
+
 
 form.addEventListener('submit', (e) => {
 
@@ -12,28 +29,46 @@ form.addEventListener('submit', (e) => {
         alert("pls enter valid text");
     } else {
 
-        const li = document.createElement('li');
-        li.className = 'collection-item';
-        li.appendChild(document.createTextNode(taskInput.value));
 
-        const link = document.createElement('a');
-        // Add class
-        link.className = 'delete-item secondary-content';
-        // Add icon html
-        link.innerHTML = '<i class="fa fa-remove"></i>';
-        // Append the link to li
-        li.appendChild(link);
+        addTask(taskInput.value);
 
-
-        console.log(link);
-        console.log(li);
+        storeTaskInLocalStorage(taskInput.value);
 
         taskInput.value = '';
-        taskList.appendChild(li);
         e.preventDefault();
     }
 });
 
+function addTask(taskValue) {
+    const li = document.createElement('li');
+    li.className = 'collection-item';
+    li.appendChild(document.createTextNode(taskValue));
+
+    const link = document.createElement('a');
+    // Add class
+    link.className = 'delete-item secondary-content';
+    // Add icon html
+    link.innerHTML = '<i class="fa fa-remove"></i>';
+    // Append the link to li
+    li.appendChild(link);
+
+    taskList.appendChild(li);
+}
+
+function storeTaskInLocalStorage(taskValue) {
+
+    let tasks;
+    if (localStorage.getItem(`tasks`) === null) {
+        tasks = [];
+    }
+    else {
+        tasks = JSON.parse(localStorage.getItem(`tasks`));
+    }
+
+    tasks.push(taskValue);
+    localStorage.setItem(`tasks`, JSON.stringify(tasks));
+
+}
 
 
 taskList.addEventListener("click", (e) => {
