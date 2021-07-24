@@ -1,2 +1,2 @@
 # javascript
-Small JavaScript Projects
+Open index.html  in any browser
