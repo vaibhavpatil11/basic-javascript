@@ -75,19 +75,49 @@ taskList.addEventListener("click", (e) => {
 
 
     if (e.target.parentElement.classList.contains('delete-item')) {
-        if (confirm("are you sure ?"))
+        if (confirm("are you sure ?")) {
+
             e.target.parentElement.parentElement.remove();
+            removeTaskFromLocalStorage(e.target.parentElement.parentElement);
+
+        }
     }
 
 
 
 });
 
+function removeTaskFromLocalStorage(taskItem) {
+
+    let tasks;
+    if (localStorage.getItem(`tasks`) === null) {
+        tasks = [];
+    }
+    else {
+        tasks = JSON.parse(localStorage.getItem(`tasks`));
+    }
+
+    tasks.forEach(function (task, index) {
+
+
+        if (taskItem.textContent == task) {
+            tasks.splice(index, 1);
+        }
+
+
+    });
+
+    localStorage.setItem(`tasks`, JSON.stringify(tasks));
+
+}
+
 clearBtn.addEventListener("click", (e) => {
 
     while (taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
     }
+
+    localStorage.clear();
 
 
 });
